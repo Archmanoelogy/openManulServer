@@ -56,6 +56,8 @@ class OpenManulDataService:
                 if manul_id in self.manuls:
                     if "ImgID" not in self.manuls[manul_id]:
                         self.manuls[manul_id]["ImgID"] = image_id
+                        self.manuls[manul_id]["ImgAuthor"] = img.get("author","")
+                        self.manuls[manul_id]["ImgLink"] = img.get("link",".")
                 else:
                     raise Exception(f"image ({image_id}) belongs to unknown manul ID: {manul_id}")
         

@@ -34,6 +34,13 @@ class OpenManulHTTPRequestHandler(SimpleHTTPRequestHandler):
         elif split_path[1] == "zoos":
             super().do_GET()
             return
+        elif split_path[1] == "individual":
+            manul = om_database.getIndividualByID(split_path[2])
+            zoos = om_database.getZoos()
+            if manul:
+                html_snippet = hx.fmt_info(manul, zoos, "zh")
+            else:
+                super().do_GET()
         elif split_path[1] == "nav":
             zoos = om_database.getZoos().values()
             html_snippet = hx.fmt_zoo_filter(zoos, "zh")
@@ -60,7 +67,7 @@ class OpenManulHTTPRequestHandler(SimpleHTTPRequestHandler):
                 ref_id_str = split_path[4]
                 indv = om_database.getIndividualByID(manul_id)
                 ref_idx = int(ref_id_str) - 1
-                redirection_url = indv["links"][ref_idx]
+                redirection_url = indv["links"][ref_idx]["href"]
                 print(redirection_url)
                 self.send_response(302)
                 self.send_header("Location", redirection_url)
