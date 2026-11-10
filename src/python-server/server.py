@@ -2,6 +2,7 @@
 import os
 import sys
 from http.server import HTTPServer, SimpleHTTPRequestHandler
+from urllib.parse import urlparse
 import servUtils.htmx_tpl as hx
 import dataUtils.dataService as datServ
 
@@ -11,11 +12,50 @@ PORT = 8080
 class OpenManulHTTPRequestHandler(SimpleHTTPRequestHandler):
     """自定义请求处理器，添加 UTF-8 编码响应头与基础 MIME 类型支持"""
     def do_GET(self):
+        path = urlparse(self.path).path
         # 拦截特定路由，返回对应的 HTML 片段
-        split_path = self.path.split("/")
-        if split_path[0] != "":
-            super.do_GET()
+        split_path = path.split("/")
+        if len(split_path) < 2 or split_path[1] == "":
+            self.path = "/individuals.html"
+            super().do_GET()
             return
+        if split_path[1] in ('list', 'view', 'tree', 'map', 'timeline'):
+            self.path = "/individuals.html"
+            super().do_GET()
+            return
+        # 资源类路由前置，不参与片段/整页判断
+        if split_path[1] == "image":
+            '''image/manul/{imgID}'''
+            pic_path = "/".join([om_data_dir, "data", "individuals", split_path[2], "image", split_path[3]])
+            if not os.path.exists(pic_path):
+                pic_path = "/".join([om_serv_dir, "template", "resource", "profile.png"])
+            print(pic_path)
+            with open(pic_path, "rb") as f:
+                content = f.read()
+            self.send_response(200)
+            self.send_header("Content-Type", "image/png")
+            self.send_header("Content-Length", str(len(content)))
+            self.end_headers()
+            self.wfile.write(content)
+            return
+        if split_path[1] == "reference":
+            '''reference/manul/{ID}/{ref_id}'''
+            try:
+                # split_path[2] == "manul"
+                manul_id   = split_path[3]
+                ref_id_str = split_path[4]
+                indv = om_database.getIndividualByID(manul_id)
+                ref_idx = int(ref_id_str) - 1
+                redirection_url = indv["links"][ref_idx]["href"]
+                print(redirection_url)
+                self.send_response(302)
+                self.send_header("Location", redirection_url)
+                self.send_header("Content-Length", "0")
+                self.end_headers()
+                return
+            except:
+                super().do_GET()
+                return
         if split_path[1] == "individuals":
             '''/individuals'''
             manuls = om_database.getIndividuals().values()
@@ -42,41 +82,10 @@ class OpenManulHTTPRequestHandler(SimpleHTTPRequestHandler):
                 html_snippet = hx.fmt_info(manul, zoos, "zh")
             else:
                 super().do_GET()
+                return
         elif split_path[1] == "nav":
             zoos = om_database.getZoos().values()
             html_snippet = hx.fmt_zoo_filter(zoos, "zh")
-        elif split_path[1] == "image":
-            '''image/manul/{imgID}'''
-            pic_path = "/".join([om_data_dir, "data", "individuals", split_path[2], "image", split_path[3]])
-            if not os.path.exists(pic_path):
-                pic_path = "/".join([om_serv_dir, "template", "resource", "profile.png"])
-            print(pic_path)
-            with open(pic_path, "rb") as f:
-                content = f.read()
-            self.send_response(200)
-            self.send_header("Content-Type", "image/png")
-            self.send_header("Content-Length", str(len(content)))
-            self.end_headers()
-            self.wfile.write(content)
-            return
-        elif split_path[1] == "reference":
-            '''reference/manul/{ID}/{ref_id}'''
-            try:
-                # split_path[2] == "manul"
-                manul_id   = split_path[3]
-                ref_id_str = split_path[4]
-                indv = om_database.getIndividualByID(manul_id)
-                ref_idx = int(ref_id_str) - 1
-                redirection_url = indv["links"][ref_idx]["href"]
-                print(redirection_url)
-                self.send_response(302)
-                self.send_header("Location", redirection_url)
-                self.send_header("Content-Length", "0")
-                self.end_headers()
-                return
-            except:
-                super().do_GET()
-                return
         else:
             super().do_GET()
             return

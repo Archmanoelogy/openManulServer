@@ -27,7 +27,7 @@ def fmt_card(indv, lang):
     if "name" not in indv: raise Exception(f"""manul ID: {indv["ID"]} has no name.""")
     htmx = f"""
     <section class="card">
-		<a class="bm" name="{indv["ID"]}" hx-get="/individual/{indv["ID"]}" hx-target="article" hx-swap="innerHTML">
+		<a class="bm" name="{indv["ID"]}" hx-get="/individual/{indv["ID"]}" hx-target="article" hx-swap="innerHTML" hx-trigger="click[!event.target.closest('omr')]">
 			<div class="card-inner">
 				<div class="card-face card-front">
 					<img class="card-image" src="image/manul/{indv.get("ImgID","")}.png" alt="">
@@ -47,7 +47,7 @@ def fmt_card(indv, lang):
     return(htmx)
 
 def fmt_info(indv, zoos, lang):
-    if "name" not in indv: raise Exception(f"manul ID: {indv["ID"]} has no name.")
+    if "name" not in indv: raise Exception(f"""manul ID: {indv["ID"]} has no name.""")
     alias = indv.get("alias")
     if type(alias) == dict:
         alias_items = []
