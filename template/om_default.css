@@ -395,6 +395,10 @@ article
 	justify-content: center;
     flex: 1;
 }
+article:has(> section.info)
+{
+    display: block;
+}
 .card
 {
     width: 16rem;
@@ -490,4 +494,204 @@ omr::after {
 omr:hover {
     color: var(--theme-light);
     text-decoration: underline;
+}
+
+section.info
+{
+    flex: 1;
+    overflow-y: auto;
+    padding: 1.5rem 2rem 3rem;
+    box-sizing: border-box;
+    max-width: 56rem;
+    margin: 0 auto;
+    color: var(--theme-gray-25);
+}
+section.info .info-title
+{
+    margin: 0 0 0.25rem;
+    font-size: 1.75rem;
+    font-weight: 900;
+    color: var(--theme-dark);
+    line-height: 1.2;
+}
+section.info .info-year
+{
+    margin: 0 0 1.25rem;
+    font-size: 0.875rem;
+    letter-spacing: 0.05em;
+    color: var(--theme-gray-50);
+}
+section.info .info-alias,
+section.info .info-residents,
+section.info .info-relats,
+section.info .info-gallery,
+section.info .info-links
+{
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+section.info .info-alias > span,
+section.info .info-residents > span,
+section.info .info-relats > span,
+section.info .info-gallery > span,
+section.info .info-links > span
+{
+    flex: 0 0 auto;
+    font-weight: 700;
+    color: var(--theme-dark);
+    white-space: nowrap;
+}
+section.info .info-alias ul,
+section.info .info-residents ul,
+section.info .info-links ul
+{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 0.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+section.info .info-alias li
+{
+    padding: 0.05rem 0.5rem;
+    border-radius: 0.75rem;
+    background-color: var(--theme-light);
+    color: var(--theme-dark);
+    font-size: 0.8125rem;
+}
+section.info .info-residents ul
+{
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+section.info .info-residents li a
+{
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    padding: 0.1rem 0.5rem;
+    border-left: 0.1875rem solid var(--theme-midst);
+    border-radius: 0 0.25rem 0.25rem 0;
+    color: var(--theme-gray-25);
+    text-decoration: none;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+section.info .info-residents li a:hover
+{
+    background-color: var(--theme-transparent-99);
+    border-left-color: var(--theme-dark);
+}
+section.info .info-residents li a > span:last-child
+{
+    font-size: 0.75rem;
+    color: var(--theme-gray-50);
+    white-space: nowrap;
+}
+section.info .info-residents li a.info-nature
+{
+    border-left-color: rgb(120, 150, 100);
+}
+section.info .info-image
+{
+    margin: 0 0 1.5rem;
+    text-align: center;
+}
+section.info .info-image img
+{
+    display: block;
+    max-width: 100%;
+    max-height: 24rem;
+    margin: 0 auto 0.25rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.25rem 0.75rem var(--theme-transparent-60);
+    object-fit: contain;
+}
+section.info .info-image > span,
+section.info .info-image > a
+{
+    font-size: 0.75rem;
+    color: var(--theme-gray-50);
+}
+section.info .info-image > a
+{
+    color: var(--theme-midst);
+    text-decoration: none;
+}
+section.info .info-image > a:hover
+{
+    color: var(--theme-dark);
+    text-decoration: underline;
+}
+section.info .info-detail
+{
+    margin-bottom: 1.5rem;
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: var(--theme-gray-25);
+}
+section.info .info-detail omr
+{
+    color: var(--theme-dark);
+    font-weight: 700;
+}
+section.info .info-detail omr:hover
+{
+    color: var(--theme-midst);
+}
+section.info .info-relats .sections,
+section.info .info-gallery .sections
+{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 16rem));
+    gap: 1rem;
+    flex: 1;
+    min-width: 0;
+}
+section.info .info-links li
+{
+    position: relative;
+    padding-left: 0.75rem;
+    color: var(--theme-midst);
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+section.info .info-links li::before
+{
+    content: "›";
+    position: absolute;
+    left: 0;
+    color: var(--theme-gray-75);
+}
+section.info .info-links li:hover
+{
+    color: var(--theme-dark);
+    text-decoration: underline;
+}
+@media (max-width: 40rem)
+{
+    section.info
+    {
+        padding: 1rem 1rem 2rem;
+    }
+    section.info .info-alias,
+    section.info .info-residents,
+    section.info .info-relats,
+    section.info .info-gallery,
+    section.info .info-links
+    {
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+    section.info .info-relats .sections,
+    section.info .info-gallery .sections
+    {
+        grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
+    }
 }
