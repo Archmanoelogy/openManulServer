@@ -4,6 +4,10 @@ Creating a server to present [OpenManul](https://github.com/Archmanoelogy/openMa
 
 # Quick Start
 
+Install Python 3.x and make sure **openManul** and **openManulServer** are in the same path.
+
+Run this shell:
+
 ``` shell
 cd src/python-server
 python3 -m server
