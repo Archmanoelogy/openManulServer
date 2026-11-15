@@ -649,10 +649,22 @@ section.info .info-relats .sections,
 section.info .info-gallery .sections
 {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(16rem, 16rem));
+    grid-template-columns: repeat(auto-fill, minmax(9rem, 9rem));
     gap: 1rem;
     flex: 1;
     min-width: 0;
+}
+div.info-relats
+{
+	flex-wrap: wrap;
+	align-items: flex-start;
+	gap: 0.5rem;
+	padding-inline: 3rem 1.5rem;
+}
+div.info-relats section.card
+{
+	height: 9rem;
+	width: 9rem;
 }
 section.info .info-links li
 {

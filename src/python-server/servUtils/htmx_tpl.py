@@ -1,4 +1,5 @@
 # -*- coding: UTF-8 -*-
+from html import escape
 
 def __auto_lang(desc, lang):
     if type(desc)==str:
@@ -27,21 +28,21 @@ def fmt_card(indv, lang):
     if "name" not in indv: raise Exception(f"""manul ID: {indv["ID"]} has no name.""")
     htmx = f"""
     <section class="card">
-		<a class="bm" name="{indv["ID"]}" hx-get="/individual/{indv["ID"]}" hx-target="article" hx-swap="innerHTML" hx-trigger="click[!event.target.closest('omr')]">
-			<div class="card-inner">
-				<div class="card-face card-front">
-					<img class="card-image" src="image/manul/{indv.get("ImgID","")}.png" alt="">
-					<div class="card-overlay">
-						<h2 class="card-title">{__auto_lang(indv["name"], lang)}</h2>
-						<p class="card-description">{__lifetime(indv)}</p>
-					</div>
-				</div>
-				<div class="card-face card-back">
-					<h2 class="card-title">{__auto_lang(indv["name"], lang)}</h2>
-					<p class="card-description">{__auto_lang(indv.get("info",{"_":""}), lang)}</p>
-				</div>
-			</div>
-		</a>
+        <a class="bm" name="{indv["ID"]}" hx-get="/individual/{indv["ID"]}" hx-target="article" hx-swap="innerHTML" hx-push-url="/view/{indv["ID"]}" hx-trigger="click[!event.target.closest('omr')]">
+            <div class="card-inner">
+                <div class="card-face card-front">
+                    <img class="card-image" src="/image/manul/{indv.get("ImgID","")}.png" alt="">
+                    <div class="card-overlay">
+                        <h2 class="card-title">{__auto_lang(indv["name"], lang)}</h2>
+                        <p class="card-description">{__lifetime(indv)}</p>
+                    </div>
+                </div>
+                <div class="card-face card-back">
+                    <h2 class="card-title">{__auto_lang(indv["name"], lang)}</h2>
+                    <p class="card-description">{__auto_lang(indv.get("info",{"_":""}), lang)}</p>
+                </div>
+            </div>
+        </a>
     </section>
     """
     return(htmx)
@@ -90,7 +91,7 @@ def fmt_info(indv, zoos, lang):
     if type(links) == list:
         links_ul = []
         for lnk in links:
-            links_ul.append(f"""<li href=`{lnk.get("href",".")}`>{lnk.get("title","[ref]")}</li>""")
+            links_ul.append(f"""<li href="{escape(lnk.get("href","."))}">{lnk.get("title","[ref]")}</li>""")
         links_div = f"""
         <div class="info-links">
             <span>链接：</span>
@@ -106,10 +107,12 @@ def fmt_info(indv, zoos, lang):
         <p class="info-year">{__lifetime(indv)}</p>
         {alias_div}
         <div class="info-image">
-            <img src="image/manul/{indv.get("ImgID","")}.png" alt="">
-            <span>图源：</span><a href=""\\`{indv.get("ImgLink","")}`>{indv.get("ImgAuthor","")}</a>
+            <img src="/image/manul/{indv.get("ImgID","")}.png" alt="">
+            <span>图源：</span><a href="{escape(indv.get("ImgLink",""))}">{indv.get("ImgAuthor","")}</a>
         </div>
+		<a class="bm" name="{indv["ID"]}">
         <div class="info-detail">{__auto_lang(indv.get("info",{"_":""}), lang)}</div>
+		</a>
         {residents_div}
         <div class="info-relats" hx-get="/individuals?related_to={indv["ID"]}" hx-trigger="load" hx-target="this">
         </div>

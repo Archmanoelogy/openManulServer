@@ -2,7 +2,7 @@
 import os
 import sys
 from http.server import HTTPServer, SimpleHTTPRequestHandler
-from urllib.parse import urlparse
+from urllib.parse import urlparse, parse_qs
 import servUtils.htmx_tpl as hx
 import dataUtils.dataService as datServ
 
@@ -13,13 +13,11 @@ class OpenManulHTTPRequestHandler(SimpleHTTPRequestHandler):
     """自定义请求处理器，添加 UTF-8 编码响应头与基础 MIME 类型支持"""
     def do_GET(self):
         path = urlparse(self.path).path
+        is_htmx = self.headers.get('Hx-Request') == 'true'
+        query_params = parse_qs(urlparse(self.path).query)
         # 拦截特定路由，返回对应的 HTML 片段
         split_path = path.split("/")
         if len(split_path) < 2 or split_path[1] == "":
-            self.path = "/individuals.html"
-            super().do_GET()
-            return
-        if split_path[1] in ('list', 'view', 'tree', 'map', 'timeline'):
             self.path = "/individuals.html"
             super().do_GET()
             return
@@ -56,9 +54,21 @@ class OpenManulHTTPRequestHandler(SimpleHTTPRequestHandler):
             except:
                 super().do_GET()
                 return
+        if not is_htmx:
+            if split_path[1] in ('list', 'view', 'tree', 'map', 'timeline'):
+                self.path = "/individuals.html"
+                super().do_GET()
+                return
+            else:
+                super().do_GET()
+                return
         if split_path[1] == "individuals":
             '''/individuals'''
-            manuls = om_database.getIndividuals().values()
+            related_to = query_params.get("related_to", [None])[0]
+            if related_to:
+                manuls = om_database.getIndividualsRelatedTo(related_to).values()
+            else:
+                manuls = om_database.getIndividuals().values()
             manul_sections = []
             for manul in manuls:
                 manul_section = hx.fmt_card(manul, "zh")

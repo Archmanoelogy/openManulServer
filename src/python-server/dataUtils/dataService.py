@@ -90,5 +90,29 @@ class OpenManulDataService:
     def getIndividualByID(self, id):
         return self.manuls.get(id, None)
 
+    def getIndividualsRelatedTo(self, core_id):
+        parents = []
+        partners = []
+        children = []
+        for litter in self.litters.values():
+            if core_id in litter.get("kittens",[]):
+                m = litter.get("mother", None)
+                if m: parents.append(m)
+                f = litter.get("father", None)
+                if f: parents.append(f)
+                parents += litter.get("father_candidates", [])
+            if core_id in litter.get("mother",[]):
+                children += litter.get("kittens", [])
+                p = litter.get("father", None)
+                if p: partners.append(p)
+                partners += litter.get("father_candidates", [])
+            if core_id in litter.get("father",[]):
+                children += litter.get("kittens", [])
+                p = litter.get("mother", None)
+                if p: partners.append(p)
+        related_ids = list(dict.fromkeys(parents + partners + children))
+        related_rec = {x:self.manuls[x] for x in related_ids}
+        return related_rec
+    
     def getZoos(self, filter=""):
         return self.zoos
