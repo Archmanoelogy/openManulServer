@@ -686,6 +686,11 @@ section.info .info-links li:hover
     color: var(--theme-dark);
     text-decoration: underline;
 }
+section.info .info-links li a
+{
+    text-decoration: none;
+    color: inherit;
+}
 @media (max-width: 40rem)
 {
     section.info
