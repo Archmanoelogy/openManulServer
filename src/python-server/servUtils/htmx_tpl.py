@@ -91,7 +91,7 @@ def fmt_info(indv, zoos, lang):
     if type(links) == list:
         links_ul = []
         for lnk in links:
-            links_ul.append(f"""<li href="{escape(lnk.get("href","."))}">{lnk.get("title","[ref]")}</li>""")
+            links_ul.append(f"""<li><a  href="{escape(lnk.get("href","."))}">{lnk.get("title","[ref]")}</a></li>""")
         links_div = f"""
         <div class="info-links">
             <span>链接：</span>

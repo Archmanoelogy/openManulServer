@@ -22,7 +22,7 @@ function nav_deselectAll(sender, event){
 
 document.addEventListener('click', function(event){
     const options = document.querySelectorAll('header nav li.nav-dropdown details[open]');
-	for(opt of options){
+	for(const opt of options){
         if (!opt.contains(event.target)) {
             opt.removeAttribute('open');
         }
