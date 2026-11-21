@@ -1,0 +1,59 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta itemprop="name" content="Archmanoelogy | OpenManul Dataset">
+    <meta itemprop="image" content="/resource/profile.png">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="/resource/profile.png">
+    <meta name="description" itemprop="description" content="OpenManul is a dataset about manul and maybe more to which everyone can contribute. If wanting to edit, check out github repo Archmanoelogy:openManul for more information.">
+    <title>OpenManul | [[tab_title]]</title>
+    <link rel="icon" href="/resource/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="/resource/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="/om_default.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script src="/om_loader.js"></script>
+</head>
+<body>
+    <header>
+        <div>
+            <h1><span>OpenManul</span><br><span style="font-size:1rem;">[[tab_title]]</span></h1>
+        </div>
+        <div>
+            <nav>
+                <ul>
+                    <li hx-get="/individuals" hx-target="article" hx-swap="innerHTML"><i class="fa fa-list"></i>List</li>
+                    <li hx-get="/tree" hx-target="article" hx-swap="innerHTML"><i class="fa fa-sitemap"></i>Tree</li>
+                    <li hx-get="/map" hx-target="article" hx-swap="innerHTML"><i class="fa fa-map-marker"></i>Map</li>
+                    <li hx-get="/timeline" hx-target="article" hx-swap="innerHTML"><i class="fa fa-clock-o"></i>Timeline</li>
+                    <li hx-get="/contribute" hx-target="article" hx-swap="innerHTML"><i class="fa fa-pencil"></i>Contribute</li>
+                    <li class="nav-dropdown">
+                        <details>
+                            <summary><i class="fa fa-language"></i>Language</summary>
+                            <ul style="display: block;">
+                                <li><a href="javascript:void(0)">English</a></li>
+                                <li><a href="javascript:void(0)">中文</a></li>
+                                <li><a href="javascript:void(0)">Русский</a></li>
+                                <li><a href="javascript:void(0)">日本語</a></li>
+                            </ul>
+                        </details>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <aside>
+            <nav hx-get="[[aside_htmx_url]]" hx-trigger="load" hx-target="this">
+            </nav>
+        </aside>
+        <article hx-get="[[article_htmx_url]]" hx-trigger="load" hx-target="this">
+        </article>
+        <!--article hx-get="/htmx-example/section_card.html" hx-trigger="load" hx-target="this"-->
+    </main>
+    <footer>
+        <a href="https://github.com/Archmanoelogy/openManul">Archmanoelogy</a>
+    </footer>
+</body>
+</html>
