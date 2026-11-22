@@ -28,7 +28,7 @@ def fmt_card(indv, lang):
     if "name" not in indv: raise Exception(f"""manul ID: {indv["ID"]} has no name.""")
     htmx = f"""
     <section class="card">
-        <a class="bm" name="{indv["ID"]}" hx-get="/individual/{indv["ID"]}" hx-target="article" hx-swap="innerHTML" hx-push-url="/view/{indv["ID"]}" hx-trigger="click[!event.target.closest('omr')]">
+        <a class="bm" name="{indv["ID"]}" href="/view/{indv["ID"]}">
             <div class="card-inner">
                 <div class="card-face card-front">
                     <img class="card-image" src="/image/manul/{indv.get("ImgID","")}.png" alt="">
@@ -140,6 +140,28 @@ def fmt_zoo_filter(zoos, lang):
                 <button type="button" class="summary-btn" title="Deselect all" onclick="nav_deselectAll(this, event)"><i class="fa fa-square-o"></i></button>
                 <i class="fa fa-chevron-down toggle-icon"></i>
             </span>
+        </summary>
+        <div class="collapsible-wrapper">
+            <ul>
+                {li_list_dom}
+            </ul>
+        </div>
+    </details>
+    """
+    return(htmx)
+    
+def fmt_indiv_nav(manuls, lang):
+    li_list = []
+    for manul in manuls:
+        li_list.append(f"""
+                    <li><a href="/view/{manul["ID"]}" name="{manul["ID"]}">{__auto_lang(manul["name"], lang)}</a></li>
+        """)
+    li_list_dom = "".join(li_list)
+    title = u"个体列表"
+    htmx = f"""
+    <details class="nav-group" open>
+        <summary>
+            <h2>{title}</h2>
         </summary>
         <div class="collapsible-wrapper">
             <ul>

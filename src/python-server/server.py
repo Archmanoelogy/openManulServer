@@ -1,10 +1,12 @@
 # -*- coding: UTF-8 -*-
 import os
 import sys
+import re
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from urllib.parse import urlparse, parse_qs
 import servUtils.htmx_tpl as hx
 import dataUtils.dataService as datServ
+
 
 HOST = "127.0.0.1"
 PORT = 8080
@@ -79,9 +81,16 @@ class OpenManulHTTPRequestHandler(SimpleHTTPRequestHandler):
                 super().do_GET()
                 return
         elif _split_path[0] == "nav":
-            print("nav", "-all")
-            zoos = om_database.getZoos().values()
-            html_snippet = hx.fmt_zoo_filter(zoos, "zh")
+            nav_title = _split_path[1] if len(_split_path)>1 else "zoo"
+            if nav_title == "manul":
+                print("nav", "manul")
+                manuls = om_database.getIndividuals().values()
+                html_snippet = hx.fmt_indiv_nav(manuls, "zh")
+            else:
+                # /nav/zoo
+                print("nav", "zoo")
+                zoos = om_database.getZoos().values()
+                html_snippet = hx.fmt_zoo_filter(zoos, "zh")
         elif _split_path[0] in ('list', 'view', 'tree', 'map', 'timeline'):
             if _is_htmx:
                 print(_split_path[0], "htmx")
@@ -94,7 +103,7 @@ class OpenManulHTTPRequestHandler(SimpleHTTPRequestHandler):
                 if tab == "view":
                     html_snippet = om_page_template
                     html_snippet = html_snippet.replace("[[tab_title]]", "View")
-                    html_snippet = html_snippet.replace("[[aside_htmx_url]]", "/nav")
+                    html_snippet = html_snippet.replace("[[aside_htmx_url]]", "/nav/manul")
                     if param:
                         html_snippet = html_snippet.replace("[[article_htmx_url]]", f"/individual/{param}")
                     else:
@@ -111,9 +120,11 @@ class OpenManulHTTPRequestHandler(SimpleHTTPRequestHandler):
             if _is_htmx:
                 print("otherwise", "htmx")
                 html_snippet = ""
+                self.send_response(404)
             else:
                 print("otherwise", "page")
-                self.path = "/individuals.html"
+                if re.search("\.html?$", _split_path[-1].lower()):
+                    self.path = "/individuals.html"
                 super().do_GET()
                 return
         content = html_snippet.encode("utf-8")
