@@ -51,8 +51,8 @@ class OpenManulDataService:
             for img in images:
                 image_id = img["ImgID"]
                 if image_id in self.image_credits: raise Exception(f"repeated image ID: {image_id}")
-                self.image_credits[image_id] = img
                 manul_id = "_".join(image_id.split("_")[:-1])
+                self.image_credits[image_id] = {**img, **{"ID": manul_id}}
                 if manul_id in self.manuls:
                     if "ImgID" not in self.manuls[manul_id]:
                         self.manuls[manul_id]["ImgID"] = image_id
@@ -114,5 +114,10 @@ class OpenManulDataService:
         related_rec = {x:self.manuls[x] for x in related_ids}
         return related_rec
     
+    def getIndividual_images(self, id):
+        imgs = self.image_credits
+        images = {img_id:imgs[img_id] for img_id in imgs if imgs[img_id]["ID"] == id}
+        return images
+        
     def getZoos(self, filter=""):
         return self.zoos

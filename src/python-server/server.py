@@ -70,16 +70,31 @@ class OpenManulHTTPRequestHandler(SimpleHTTPRequestHandler):
                 manul_section = hx.fmt_card(manul, "zh")
                 manul_sections.append(manul_section)
             html_snippet = "".join(manul_sections)
+        elif _split_path[0] == "gallery":
+            '''/gallery/{ID}'''
+            id = _querys.get("id", [None])[0]
+            if id:
+                print("gallery", id)
+                images = om_database.getIndividual_images(id).values()
+            else:
+                print("gallery", "--no-id")
+                images = []
+            image_sections = []
+            for image in images:
+                image_section = hx.fmt_gallery(image, "zh")
+                image_sections.append(image_section)
+            html_snippet = "".join(image_sections)
+        
         elif _split_path[0] == "individual":
-            manul = om_database.getIndividualByID(_split_path[1])
-            zoos = om_database.getZoos()
+            manul_id = _split_path[1] if len(_split_path)>1 else None
+            manul = om_database.getIndividualByID(manul_id)
             if manul:
                 print("individual", manul["ID"])
+                zoos = om_database.getZoos()
                 html_snippet = hx.fmt_info(manul, zoos, "zh")
             else:
                 print("individual", "ID not found")
-                super().do_GET()
-                return
+                html_snippet = f"<p>ID {manul_id} not found.</p>"
         elif _split_path[0] == "nav":
             nav_title = _split_path[1] if len(_split_path)>1 else "zoo"
             if nav_title == "manul":
@@ -140,6 +155,7 @@ class OpenManulHTTPRequestHandler(SimpleHTTPRequestHandler):
             self.send_header("Content-Type", f"{self.guess_type(self.path)}; charset=utf-8")
         # 允许跨域请求（方便后续前端跨域测试 API 或拉取 openManul 数据）
         self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Connection", "close")
         super().end_headers()
 
 

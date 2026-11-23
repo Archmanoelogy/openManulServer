@@ -47,6 +47,30 @@ def fmt_card(indv, lang):
     """
     return(htmx)
 
+def fmt_gallery(img, lang):
+    htmx = f"""
+    <section class="card">
+        <a class="bm" name="{img["ImgID"]}" href="{img["link"]}">
+            <div class="card-inner">
+                <div class="card-face card-front">
+                    <img class="card-image" src="/image/manul/{img["ImgID"]}.png" alt="">
+                    <div class="card-overlay">
+                        <h2 class="card-title"></h2>
+                        <p class="card-description"></p>
+                    </div>
+                </div>
+                <div class="card-face card-back">
+                    <h2 class="card-title">{img.get("author", "")}</h2>
+                    <p class="card-description">{img.get("date", "")}</p>
+                </div>
+            </div>
+        </a>
+    </section>
+    """
+    return(htmx)
+
+
+
 def fmt_info(indv, zoos, lang):
     if "name" not in indv: raise Exception(f"""manul ID: {indv["ID"]} has no name.""")
     alias = indv.get("alias")
@@ -151,23 +175,34 @@ def fmt_zoo_filter(zoos, lang):
     return(htmx)
     
 def fmt_indiv_nav(manuls, lang):
+    li_group = {}
     li_list = []
-    for manul in manuls:
-        li_list.append(f"""
-                    <li><a href="/view/{manul["ID"]}" name="{manul["ID"]}">{__auto_lang(manul["name"], lang)}</a></li>
+    manul_ids = list(manuls)
+    manul_ids.sort(key=lambda x:x.get("ID",""))
+    for manul in manul_ids:
+        group_title = manul["ID"][0]
+        year_1 = manul.get("year_1", None)
+        year_sub = ", "+year_1[:4] if year_1 else ""
+        print(year_sub)
+        li_dom = f"""
+                    <li><a href="/view/{manul["ID"]}" name="{manul["ID"]}">{__auto_lang(manul["name"], lang)+year_sub}</a></li>
+        """
+        li_group[group_title] = li_group.get(group_title, []) + [li_dom]
+    li_group_doms = []
+    sorted_title = list(li_group.keys())
+    sorted_title.sort()
+    for group_title in sorted_title:
+        li_list_dom = "\n".join(li_group[group_title])
+        li_group_doms.append(f"""
+        <details class="nav-group" open>
+            <summary>
+                <h2>{group_title}</h2>
+            </summary>
+            <div class="collapsible-wrapper">
+                <ul>
+                    {li_list_dom}
+                </ul>
+            </div>
+        </details>
         """)
-    li_list_dom = "".join(li_list)
-    title = u"个体列表"
-    htmx = f"""
-    <details class="nav-group" open>
-        <summary>
-            <h2>{title}</h2>
-        </summary>
-        <div class="collapsible-wrapper">
-            <ul>
-                {li_list_dom}
-            </ul>
-        </div>
-    </details>
-    """
-    return(htmx)
+    return("\n".join(li_group_doms))

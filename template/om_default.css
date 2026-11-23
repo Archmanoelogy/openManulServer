@@ -654,14 +654,16 @@ section.info .info-gallery .sections
     flex: 1;
     min-width: 0;
 }
-div.info-relats
+div.info-relats,
+div.info-gallery
 {
 	flex-wrap: wrap;
 	align-items: flex-start;
 	gap: 0.5rem;
 	padding-inline: 3rem 1.5rem;
 }
-div.info-relats section.card
+div.info-relats section.card,
+div.info-gallery section.card
 {
 	height: 9rem;
 	width: 9rem;
