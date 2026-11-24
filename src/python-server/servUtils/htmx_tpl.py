@@ -166,7 +166,7 @@ def fmt_zoo_filter(zoos, lang):
             </span>
         </summary>
         <div class="collapsible-wrapper">
-            <ul>
+            <ul class="zoo-filter">
                 {li_list_dom}
             </ul>
         </div>
@@ -199,7 +199,7 @@ def fmt_indiv_nav(manuls, lang):
                 <h2>{group_title}</h2>
             </summary>
             <div class="collapsible-wrapper">
-                <ul>
+                <ul class="manul">
                     {li_list_dom}
                 </ul>
             </div>

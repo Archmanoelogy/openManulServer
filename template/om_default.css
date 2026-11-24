@@ -376,6 +376,9 @@ aside nav li a.active
 aside nav li a.active::before {
     content: "[＋] ";
 }
+aside nav ul.manul li a::before {
+    content: "";
+}
 aside nav li a:focus-visible {
     outline: 2px solid var(--theme-white);
     outline-offset: 2px;
