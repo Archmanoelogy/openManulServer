@@ -3,7 +3,17 @@ import json
 import yaml
 
 """
-node = tuple([manul_id, x, y, w, h, "core"|"father"|"mother"|"f-side"|"m-side"])
+node = tuple([manul_id, x, y, w, h, relation])
+
+relation: 
+    f - father
+    m - mother
+    S - son, from mother side
+    s - son, from father side
+    D - daughter, from mother side
+    d - daughter, from father side
+    C - unisex child, from mother side
+    c - unisex child, from father side
 
 +-----------------+   -
 |                 |   |
@@ -15,7 +25,7 @@ node = tuple([manul_id, x, y, w, h, "core"|"father"|"mother"|"f-side"|"m-side"])
          2w
 """
 
-def __upward(nodes, current_node, litters):
+def __upward(nodes, current_node, litters, manuls):
     manul_id = current_node[0]
     litter = [l for l in litters.values() if manul_id in l.get("kittens",[])]
     if len(litter)>1:
@@ -39,14 +49,14 @@ def __upward(nodes, current_node, litters):
     p_y = y - p_h/2.0
     x0 = x - w
     for idx, p_id in enumerate(parents):
-        status = "mother" if mother and idx==0 else "father"
+        status = "m" if mother and idx==0 else "f"
         p_x = x0 + (2*idx+1)*p_w
-        p_node = tuple([p_id, p_x, p_y, p_w, p_h, status])
-        __upward(nodes, p_node, litters)
+        p_node = tuple([p_id, p_x, p_y, p_w, p_h, current_node[5]+status])
+        __upward(nodes, p_node, litters, manuls)
         parent_nodes.append(p_node)
     nodes += parent_nodes
     
-def __downward(nodes, current_node, litters):
+def __downward(nodes, current_node, litters, manuls):
     manul_id = current_node[0]
     litters_given = [ \
         l \
@@ -57,7 +67,7 @@ def __downward(nodes, current_node, litters):
     ]
     if len(litters_given)<1:
         return None
-    status = "m-side" if litters_given[0].get("mother")==manul_id else "f-side"
+    mother_side = litters_given[0].get("mother") == manul_id
     
     children = []
     for l in litters_given:
@@ -70,17 +80,26 @@ def __downward(nodes, current_node, litters):
     c_y = y + c_h/2.0
     x0 = x - w
     for idx, c_id in enumerate(children):
+        gender = manuls[c_id].get("gender", "UNKNOWN").upper()
+        if gender == "MALE":
+            status = "s"
+        elif gender == "FEMALE":
+            status = "d"
+        else:
+            status = "c"
+        if mother_side:
+            status = status.upper()
         c_x = x0 + (2*idx+1)*c_w
-        c_node = tuple([c_id, c_x, c_y, c_w, c_h, status])
-        __downward(nodes, c_node, litters)
+        c_node = tuple([c_id, c_x, c_y, c_w, c_h, current_node[5]+status])
+        __downward(nodes, c_node, litters, manuls)
         child_nodes.append(c_node)
     nodes += child_nodes
     
-def __build_family_tree(manul_id, litters):
-    core_manul = tuple([manul_id, 0.0, 0.0, 2.0**10, 2.0**10, "core"])
+def __build_family_tree(manul_id, litters, manuls):
+    core_manul = tuple([manul_id, 0.0, 0.0, 2.0**10, 2.0**10, ""])
     nodes = [core_manul]
-    __upward(nodes, core_manul, litters)
-    __downward(nodes, core_manul, litters)
+    __upward(nodes, core_manul, litters, manuls)
+    __downward(nodes, core_manul, litters, manuls)
     return(nodes)
 
 def __uniq(nodes):
@@ -100,25 +119,23 @@ def __uniq(nodes):
     
     for id in repeated_ids:
         repeated_nodes = [node for node in nodes if node[0]==id]
-        statuses = [node[5] for node in repeated_nodes]
-        if "mother" in statuses:
+        statuses = set([node[5] for node in repeated_nodes])
+        merged_status = "|".join(statuses)
+        statuses_last = set([x[-1] for x in statuses])
+        if "m" in statuses_last:
             merged_x = min([node[1] for node in repeated_nodes])
             merged_y = min([node[2] for node in repeated_nodes])
-            merged_status = "m-merged"
-        elif "father" in statuses:
+        elif "f" in statuses_last:
             merged_x = max([node[1] for node in repeated_nodes])
             merged_y = min([node[2] for node in repeated_nodes])
-            merged_status = "f-merged"
-        elif "m-side" in statuses:
-            selected = [node for node in repeated_nodes if node[5]=="m-side"][0]
+        elif {"D", "S"} & statuses_last:
+            selected = [node for node in repeated_nodes if node[5][-1]<="Z"][0]
             merged_x = selected[1]
             merged_y = selected[2]
-            merged_status = "c-merged"
         else:
             selected = repeated_nodes[0]
             merged_x = selected[1]
             merged_y = selected[2]
-            merged_status = "u-merged"
         new_nodes.append(tuple([id, merged_x, merged_y, None, None, merged_status]))
     
     return(new_nodes)
@@ -141,8 +158,8 @@ def __layout(nodes):
         layout_nodes.append(tuple([n[0], x_map[n[1]], y_map[n[2]], *n[3:6]]))
     return(layout_nodes)
     
-def family_tree_by_core(manul_id, litters):
-    nodes = __build_family_tree(manul_id, litters)
+def family_tree_by_core(manul_id, litters, manuls):
+    nodes = __build_family_tree(manul_id, litters, manuls)
     nodes = __uniq(nodes)
     nodes = __layout(nodes)
     return(nodes)
