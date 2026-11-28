@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 import json
 import yaml
-import tree
+from . import tree
 
 class OpenManulDataService:
     """OpenManul Data Service Class for OpenManulServer"""
@@ -115,9 +115,9 @@ class OpenManulDataService:
         related_rec = {x:self.manuls[x] for x in related_ids}
         return related_rec
     
-	def getTreeGridByID(self, core_id):
-		return(tree.family_tree_by_core(core_id, self.litters, self.manuls))
-	
+    def getTreeGridByID(self, core_id):
+        return(tree.family_tree_by_core(core_id, self.litters, self.manuls))
+    
     def getIndividual_images(self, id):
         imgs = self.image_credits
         images = {img_id:imgs[img_id] for img_id in imgs if imgs[img_id]["ID"] == id}

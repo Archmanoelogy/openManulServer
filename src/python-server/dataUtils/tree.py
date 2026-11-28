@@ -25,7 +25,7 @@ relation:
          2w
 """
 
-def __upward(nodes, current_node, litters, manuls):
+def __upward(nodes, links, current_node, litters, manuls):
     manul_id = current_node[0]
     litter = [l for l in litters.values() if manul_id in l.get("kittens",[])]
     if len(litter)>1:
@@ -52,11 +52,12 @@ def __upward(nodes, current_node, litters, manuls):
         status = "m" if mother and idx==0 else "f"
         p_x = x0 + (2*idx+1)*p_w
         p_node = tuple([p_id, p_x, p_y, p_w, p_h, current_node[5]+status])
-        __upward(nodes, p_node, litters, manuls)
+        __upward(nodes, links, p_node, litters, manuls)
         parent_nodes.append(p_node)
+        links[manul_id] = links.get(manul_id, set()) | {p_id}
     nodes += parent_nodes
     
-def __downward(nodes, current_node, litters, manuls):
+def __downward(nodes, links, current_node, litters, manuls):
     manul_id = current_node[0]
     litters_given = [ \
         l \
@@ -91,16 +92,18 @@ def __downward(nodes, current_node, litters, manuls):
             status = status.upper()
         c_x = x0 + (2*idx+1)*c_w
         c_node = tuple([c_id, c_x, c_y, c_w, c_h, current_node[5]+status])
-        __downward(nodes, c_node, litters, manuls)
+        __downward(nodes, links, c_node, litters, manuls)
         child_nodes.append(c_node)
+        links[manul_id] = links.get(manul_id, set()) | {c_id}
     nodes += child_nodes
     
 def __build_family_tree(manul_id, litters, manuls):
     core_manul = tuple([manul_id, 0.0, 0.0, 2.0**10, 2.0**10, ""])
     nodes = [core_manul]
-    __upward(nodes, core_manul, litters, manuls)
-    __downward(nodes, core_manul, litters, manuls)
-    return(nodes)
+    links = {}
+    __upward(nodes, links, core_manul, litters, manuls)
+    __downward(nodes, links, core_manul, litters, manuls)
+    return(nodes, links)
 
 def __uniq(nodes):
     ids = [n[0] for n in nodes]
@@ -159,7 +162,17 @@ def __layout(nodes):
     return(layout_nodes)
     
 def family_tree_by_core(manul_id, litters, manuls):
-    nodes = __build_family_tree(manul_id, litters, manuls)
+    nodes, links = __build_family_tree(manul_id, litters, manuls)
     nodes = __uniq(nodes)
     nodes = __layout(nodes)
-    return(nodes)
+    id_map = {}
+    for idx, node in enumerate(nodes):
+        id_map[node[0]] = idx
+    linkages = []
+    for _from in links:
+        for _to in links[_from]:
+            node_1 = nodes[id_map[_from]]
+            node_2 = nodes[id_map[_to]]
+            linkage = tuple([*node_1[1:3], *node_2[1:3], _from, _to])
+            linkages.append(linkage)
+    return(nodes, linkages)

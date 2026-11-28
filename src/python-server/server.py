@@ -67,7 +67,7 @@ class OpenManulHTTPRequestHandler(SimpleHTTPRequestHandler):
                 manuls = om_database.getIndividuals().values()
             manul_sections = []
             for manul in manuls:
-                manul_section = hx.fmt_card(manul, "zh")
+                manul_section = hx.fmt_card(manul, "view", "zh")
                 manul_sections.append(manul_section)
             html_snippet = "".join(manul_sections)
         elif _split_path[0] == "gallery":
@@ -99,8 +99,9 @@ class OpenManulHTTPRequestHandler(SimpleHTTPRequestHandler):
             nav_title = _split_path[1] if len(_split_path)>1 else "zoo"
             if nav_title == "manul":
                 print("nav", "manul")
+                nav_indv_link = _split_path[2] if len(_split_path)>2 else "view"
                 manuls = om_database.getIndividuals().values()
-                html_snippet = hx.fmt_indiv_nav(manuls, "zh")
+                html_snippet = hx.fmt_indiv_nav(manuls, nav_indv_link, "zh")
             else:
                 # /nav/zoo
                 print("nav", "zoo")
@@ -109,26 +110,33 @@ class OpenManulHTTPRequestHandler(SimpleHTTPRequestHandler):
         elif _split_path[0] in ('list', 'view', 'tree', 'map', 'timeline'):
             if _is_htmx:
                 print(_split_path[0], "htmx")
-                super().do_GET()
-                return
+                tab = _split_path[0]
+                param = _split_path[1] if len(_split_path)>1 else None
+                if tab == "tree":
+                    if param:
+                        nodes, links = om_database.getTreeGridByID(param)
+                        html_snippet = hx.fmt_tree(nodes, links, om_database.manuls, "zh")
+                    else:
+                        html_snippet = "<p>please select an individual.</p>"
+                else:
+                    super().do_GET()
+                    return
             else:
                 print(_split_path[0], "page")
                 tab = _split_path[0]
-                param = _split_path[1] if len(_split_path)>1 else None
+                param = _split_path[1] if len(_split_path)>1 else "None"
+                html_snippet = om_page_template
+                html_snippet = html_snippet.replace("[[tab_title]]", tab.title())
                 if tab == "view":
-                    html_snippet = om_page_template
-                    html_snippet = html_snippet.replace("[[tab_title]]", "View")
-                    html_snippet = html_snippet.replace("[[aside_htmx_url]]", "/nav/manul")
-                    if param:
-                        html_snippet = html_snippet.replace("[[article_htmx_url]]", f"/individual/{param}")
-                    else:
-                        html_snippet = html_snippet.replace("[[article_htmx_url]]", "/individuals")
-                elif tab in ('tree', 'map', 'timeline'):
+                    html_snippet = html_snippet.replace("[[aside_htmx_url]]", "/nav/manul/view")
+                    html_snippet = html_snippet.replace("[[article_htmx_url]]", f"/individual/{param}")
+                if tab == "tree":
+                    html_snippet = html_snippet.replace("[[aside_htmx_url]]", "/nav/manul/tree")
+                    html_snippet = html_snippet.replace("[[article_htmx_url]]", f"/tree/{param}")
+                elif tab in ('map', 'timeline'):
                     html_snippet = f"<p>This is {tab} page</p>"
                 else:
                     #list
-                    html_snippet = om_page_template
-                    html_snippet = html_snippet.replace("[[tab_title]]", "List")
                     html_snippet = html_snippet.replace("[[aside_htmx_url]]", "/nav")
                     html_snippet = html_snippet.replace("[[article_htmx_url]]", "/individuals")
         else:

@@ -24,11 +24,11 @@ def __lifetime(desc):
         else:
             return(f"")
 
-def fmt_card(indv, lang):
+def fmt_card(indv, tab, lang):
     if "name" not in indv: raise Exception(f"""manul ID: {indv["ID"]} has no name.""")
     htmx = f"""
     <section class="card">
-        <a class="bm" name="{indv["ID"]}" href="/view/{indv["ID"]}">
+        <a class="bm" name="{indv["ID"]}" href="/{tab}/{indv["ID"]}">
             <div class="card-inner">
                 <div class="card-face card-front">
                     <img class="card-image" src="/image/manul/{indv.get("ImgID","")}.png" alt="">
@@ -147,6 +147,41 @@ def fmt_info(indv, zoos, lang):
     """
     return(htmx)
 
+def fmt_tree(nodes, links, manuls, lang):
+    ncol = max([x[1] for x in nodes]) + 1
+    nrow = max([x[2] for x in nodes]) + 1
+    
+    sections = []
+    for node in nodes:
+        manul_id = node[0]
+        x = node[1]
+        y = node[2]
+        indv = manuls[manul_id]
+        section = fmt_card(indv, "tree", lang)
+        section = section.replace("""<section class="card">""", f"""<section class="card" style="--x:{x};--y:{y};">""")
+        sections.append(section)
+    
+    paths = []
+    for link in links:
+        rr = 0.05
+        x0, y0 = link[0:2]
+        x1, y1 = link[2:4]
+        yh = max(y0, y1) - 0.5
+        xd = 1 if x1>x0 else -1 if x1<x0 else 0
+        yd = 1 if y1>y0 else -1 if y1<y0 else 0
+        path = f"""<path d="M{x0},{y0} L{x0},{yh-yd*rr} Q{x0},{yh},{x0+xd*rr},{yh} L{x1-xd*rr},{yh} Q{x1},{yh},{x1},{yh+yd*rr} L{x1},{y1}"></path>"""
+        paths.append(path)
+    
+    htmx = f"""
+    <div class="treeview" style="--ncol:{ncol};--nrow:{nrow};">
+    {"\n".join(sections)}
+    <svg viewbox="-0.5 -0.5 {ncol} {nrow}">
+    {"\n".join(paths)}
+    </svg>
+    </div>
+    """
+    return(htmx)
+
 def fmt_zoo_filter(zoos, lang):
     li_list = []
     for zoo in zoos:
@@ -174,7 +209,7 @@ def fmt_zoo_filter(zoos, lang):
     """
     return(htmx)
     
-def fmt_indiv_nav(manuls, lang):
+def fmt_indiv_nav(manuls, tab, lang):
     li_group = {}
     li_list = []
     manul_ids = list(manuls)
@@ -183,9 +218,8 @@ def fmt_indiv_nav(manuls, lang):
         group_title = manul["ID"][0]
         year_1 = manul.get("year_1", None)
         year_sub = ", "+year_1[:4] if year_1 else ""
-        print(year_sub)
         li_dom = f"""
-                    <li><a href="/view/{manul["ID"]}" name="{manul["ID"]}">{__auto_lang(manul["name"], lang)+year_sub}</a></li>
+                    <li><a href="/{tab}/{manul["ID"]}" name="{manul["ID"]}">{__auto_lang(manul["name"], lang)+year_sub}</a></li>
         """
         li_group[group_title] = li_group.get(group_title, []) + [li_dom]
     li_group_doms = []
