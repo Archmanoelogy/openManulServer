@@ -138,7 +138,7 @@ def fmt_info(indv, zoos, lang):
         <div class="info-detail">{__auto_lang(indv.get("info",{"_":""}), lang)}</div>
 		</a>
         {residents_div}
-        <div class="info-relats" hx-get="/individuals?related_to={indv["ID"]}" hx-trigger="load" hx-target="this">
+        <div class="info-relats" hx-get="/tree/{indv["ID"]}" hx-trigger="load" hx-target="this">
         </div>
         <div class="info-gallery" hx-get="/gallery?id={indv["ID"]}" hx-trigger="load" hx-target="this">
         </div>

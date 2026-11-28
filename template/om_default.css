@@ -538,6 +538,14 @@ section.info .info-links
     font-size: 0.875rem;
     line-height: 1.5;
 }
+section.info .info-relats
+{
+    background: var(--theme-light);
+    width: auto;
+    height: max-content;
+    border-radius: 1rem;
+    overflow: scroll;
+}
 section.info .info-alias > span,
 section.info .info-residents > span,
 section.info .info-relats > span,
@@ -664,7 +672,7 @@ div.info-gallery
 	flex-wrap: wrap;
 	align-items: flex-start;
 	gap: 0.5rem;
-	padding-inline: 3rem 1.5rem;
+	margin-inline: 3rem 1.5rem;
 }
 div.info-relats section.card,
 div.info-gallery section.card
