@@ -28,17 +28,17 @@ body
 header
 {
     position: relative;
-    min-height: 3rem;
+    min-height: 3em;
     width: 100vw;
     width: 100dvw;
     background: linear-gradient(to bottom, var(--theme-dark), rgb(85, 70, 50));
     clear: both;
     white-space: nowrap;
-    box-shadow: 0 0.125rem 0.375rem var(--theme-transparent-60);
+    box-shadow: 0 0.125em 0.375em var(--theme-transparent-60);
     z-index: 2;
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 1em;
     padding: 0;
     box-sizing: border-box;
     flex-direction: vertical;
@@ -46,20 +46,20 @@ header
 header > div:first-child
 {
     flex: 0 0 auto;
-    min-width: 10.25rem;
-    padding-inline-start: 0.75rem;
+    min-width: 10.25em;
+    padding-inline-start: 0.75em;
 }
 header > div:last-child
 {
     flex: 1 1 auto;
-    min-width: 0rem;
+    min-width: 0em;
     align-self: stretch;
     align-items: flex-end;
     display: flex;
 }
 header h1
 {
-    font-size: 1.25rem;
+    font-size: 1.25em;
     font-weight: 900;
     margin: 0;
     white-space: nowrap;
@@ -85,11 +85,11 @@ header li
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 6rem;
-    height: 1.5rem;
-    padding-inline: 0.75rem;
+    min-width: 6em;
+    height: 1.5em;
+    padding-inline: 0.75em;
     border: 1px solid var(--theme-dark);
-    font-size: 0.875rem;
+    font-size: 0.875em;
     color: var(--theme-white);
     white-space: nowrap;
     background-color: var(--theme-midst);
@@ -109,7 +109,7 @@ header nav
 }
 header nav li i
 {
-    padding-inline-end: 0.5rem;
+    padding-inline-end: 0.5em;
 }
 header nav li.nav-dropdown
 {
@@ -131,9 +131,9 @@ header nav li.nav-dropdown > details > summary
     justify-content: center;
     width: 100%;
     height: 100%;
-    min-width: 6rem;
+    min-width: 6em;
     box-sizing: border-box;
-    font-size: 0.875rem;
+    font-size: 0.875em;
     color: var(--theme-white);
     white-space: nowrap;
     cursor: pointer;
@@ -163,7 +163,7 @@ header nav li.nav-dropdown > details > ul
     list-style: none;
     background-color: var(--theme-midst);
     border: 1px solid var(--theme-dark);
-    box-shadow: 0 0.25rem 0.75rem var(--theme-transparent-60);
+    box-shadow: 0 0.25em 0.75em var(--theme-transparent-60);
     z-index: 10;
     display: none;
 }
@@ -176,15 +176,15 @@ header nav li.nav-dropdown > details > ul > li
     display: block;
     min-width: 0;
     height: auto;
-    padding: 0.1rem;
+    padding: 0.1em;
     border: none;
     background: transparent;
 }
 header nav li.nav-dropdown > details > ul > li > a
 {
     display: block;
-    padding: 0.25rem 0.5rem;
-    font-size: 0.75rem;
+    padding: 0.25em 0.5em;
+    font-size: 0.75em;
     color: var(--theme-white);
     text-decoration: none;
     white-space: nowrap;
@@ -198,20 +198,20 @@ header nav li.nav-dropdown > details > ul > li > a:hover
 footer
 {
     position: relative;
-    height: 1.25rem;
+    height: 1.25em;
     width: 100vw;
     width: 100dvw;
     background: linear-gradient(to top, var(--theme-dark), rgb(85, 70, 50));
     clear: both;
     white-space: nowrap;
     text-align: center;
-    box-shadow: 0 -0.125rem 0.375rem var(--theme-transparent-60);
+    box-shadow: 0 -0.125em 0.375em var(--theme-transparent-60);
     z-index: 2;
 }
 footer a
 {
-    font-size: 0.75rem;
-    padding-block: 0.25rem;
+    font-size: 0.75em;
+    padding-block: 0.25em;
     color: var(--theme-white);
     text-decoration: None;
     opacity: 0.85;
@@ -232,40 +232,40 @@ main
 aside
 {
     background: var(--theme-transparent-99);
-    width: 12rem;    
+    width: 12em;    
 }
 aside[vis="hidden"]
 {
-    width: 0rem;
+    width: 0em;
 }
 aside nav
 {
     height: 100%;
     overflow-y: auto;
     box-sizing: border-box;
-    font-size: 0.75rem;
+    font-size: 0.75em;
     letter-spacing: 0.05em;
 }
 aside nav ul
 {
     list-style: none;
-    margin: 0.25rem 0.5rem 0.5rem;
+    margin: 0.25em 0.5em 0.5em;
     padding: 0;
 }
 aside nav .nav-group
 {
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.25em;
 }
 aside nav summary
 {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0.5rem 1rem;
+    padding: 0.5em 1em;
     cursor: pointer;
     user-select: none;
     list-style: none;
-    border-radius: 0.25rem;
+    border-radius: 0.25em;
     transition: background-color 0.2s ease;
 }
 aside nav summary:hover h2,
@@ -281,21 +281,21 @@ aside nav .summary-actions
 {
     display: inline-flex;
     align-items: center;
-    gap: 0.25rem;
+    gap: 0.25em;
 }
 aside nav .summary-btn
 {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 1.25rem;
-    height: 1.25rem;
+    width: 1.25em;
+    height: 1.25em;
     padding: 0;
     border: none;
-    border-radius: 0.25rem;
+    border-radius: 0.25em;
     background: transparent;
     color: var(--theme-dark);
-    font-size: 0.75rem;
+    font-size: 0.75em;
     cursor: pointer;
     transition: background-color 0.2s ease, color 0.2s ease;
 }
@@ -309,20 +309,20 @@ aside nav h2
     margin: 0;
     padding-block-start: 0;
     text-transform: uppercase;
-    font-size: 0.875rem;
+    font-size: 0.875em;
     font-weight: 900;
     color: var(--theme-dark);
 }
 aside nav .toggle-icon
 {
-	margin-inline-start: 0.3rem;
-    font-size: 0.75rem;
+	margin-inline-start: 0.3em;
+    font-size: 0.75em;
     color: var(--theme-dark);
     transition: transform 0.3s ease, color 0.2s ease;
 }
 aside nav details:first-child
 {
-    margin-top: 0.5rem;
+    margin-top: 0.5em;
 }
 aside nav details[open] .toggle-icon
 {
@@ -344,14 +344,14 @@ aside nav .collapsible-wrapper > *
 }
 aside nav li
 {
-    margin: 0 0 0.1rem;
+    margin: 0 0 0.1em;
 }
 aside nav li a
 {
     display: grid;
     grid-template-columns: 2.5em 1fr;
-    padding: 0.25rem 0.5rem;
-    border-radius: 0.25rem;
+    padding: 0.25em 0.5em;
+    border-radius: 0.25em;
     font-weight: 700;
     line-height: 1.2;
     color: var(--theme-gray-50);
@@ -389,10 +389,10 @@ aside nav li a:focus-visible {
 article
 {
     display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(16rem, 16rem));
+	grid-template-columns: repeat(auto-fit, minmax(16em, 16em));
     flex-wrap: wrap;
-    gap: 1rem;
-    padding: 1rem;
+    gap: 1em;
+    padding: 1em;
     overflow-y: auto;
     align-content: flex-start;
 	justify-content: center;
@@ -405,9 +405,9 @@ article:has(> div.treeview)
 }
 .card
 {
-    width: 16rem;
-    height: 16rem;
-    perspective: 60rem;
+    width: 16em;
+    height: 16em;
+    perspective: 60em;
     background: none;
     box-shadow: none;
 }
@@ -416,21 +416,21 @@ article:has(> div.treeview)
     position: relative;
     width: 100%;
     height: 100%;
-    border-radius: 0.5rem;
-    box-shadow: 0 0.25rem 0.5rem var(--theme-transparent-60);
+    border-radius: 0.5em;
+    box-shadow: 0 0.25em 0.5em var(--theme-transparent-60);
     transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1), box-shadow 0.6s ease;
     transform-style: preserve-3d;
 }
 .card:hover .card-inner
 {
     transform: rotateY(180deg);
-    box-shadow: 0 0.5rem 1rem var(--theme-transparent-75);
+    box-shadow: 0 0.5em 1em var(--theme-transparent-75);
 }
 .card-face
 {
     position: absolute;
     inset: 0;
-    border-radius: 0.5rem;
+    border-radius: 0.5em;
     overflow: hidden;
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
@@ -444,7 +444,7 @@ article:has(> div.treeview)
 .card-back
 {
     transform: rotateY(180deg);
-    padding: 1.25rem;
+    padding: 1.25em;
     color: var(--theme-white);
     overflow-y: auto;
     box-sizing: border-box;
@@ -462,25 +462,25 @@ article:has(> div.treeview)
 {
     position: absolute;
     inset: auto 0 0 0;
-    padding: 1rem;
+    padding: 1em;
     color: var(--theme-white);
     background: linear-gradient(to top, var(--theme-transparent-75), var(--theme-transparent-100));
 }
 .card-title
 {
-    margin: 0 0 0.5rem;
-    font-size: 1.125rem;
+    margin: 0 0 0.5em;
+    font-size: 1.125em;
     font-weight: 900;
 }
 .card-description
 {
     margin: 0;
-    font-size: 0.875rem;
+    font-size: 0.875em;
     line-height: 1.4;
 }
 omr {
     vertical-align: super;
-    font-size: 0.75rem;
+    font-size: 0.75em;
     line-height: 0;
     color: var(--theme-white);
     cursor: pointer;
@@ -504,24 +504,24 @@ section.info
 {
     flex: 1;
     overflow-y: auto;
-    padding: 1.5rem 2rem 3rem;
+    padding: 1.5em 2em 3em;
     box-sizing: border-box;
-    max-width: 56rem;
+    max-width: 56em;
     margin: 0 auto;
     color: var(--theme-gray-25);
 }
 section.info .info-title
 {
-    margin: 0 0 0.25rem;
-    font-size: 1.75rem;
+    margin: 0 0 0.25em;
+    font-size: 1.75em;
     font-weight: 900;
     color: var(--theme-dark);
     line-height: 1.2;
 }
 section.info .info-year
 {
-    margin: 0 0 1.25rem;
-    font-size: 0.875rem;
+    margin: 0 0 1.25em;
+    font-size: 0.875em;
     letter-spacing: 0.05em;
     color: var(--theme-gray-50);
 }
@@ -533,9 +533,9 @@ section.info .info-links
 {
     display: flex;
     align-items: flex-start;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
-    font-size: 0.875rem;
+    gap: 0.5em;
+    margin-bottom: 1em;
+    font-size: 0.875em;
     line-height: 1.5;
 }
 section.info .info-relats
@@ -543,7 +543,7 @@ section.info .info-relats
     background: var(--theme-light);
     width: auto;
     height: max-content;
-    border-radius: 1rem;
+    border-radius: 1em;
     overflow: scroll;
 }
 section.info .info-alias > span,
@@ -563,33 +563,33 @@ section.info .info-links ul
 {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.25rem 0.5rem;
+    gap: 0.25em 0.5em;
     margin: 0;
     padding: 0;
     list-style: none;
 }
 section.info .info-alias li
 {
-    padding: 0.05rem 0.5rem;
-    border-radius: 0.75rem;
+    padding: 0.05em 0.5em;
+    border-radius: 0.75em;
     background-color: var(--theme-light);
     color: var(--theme-dark);
-    font-size: 0.8125rem;
+    font-size: 0.8125em;
 }
 section.info .info-residents ul
 {
     flex-direction: column;
-    gap: 0.25rem;
+    gap: 0.25em;
 }
 
 section.info .info-residents li a
 {
     display: inline-flex;
     align-items: baseline;
-    gap: 0.5rem;
-    padding: 0.1rem 0.5rem;
-    border-left: 0.1875rem solid var(--theme-midst);
-    border-radius: 0 0.25rem 0.25rem 0;
+    gap: 0.5em;
+    padding: 0.1em 0.5em;
+    border-left: 0.1875em solid var(--theme-midst);
+    border-radius: 0 0.25em 0.25em 0;
     color: var(--theme-gray-25);
     text-decoration: none;
     transition: background-color 0.2s ease, border-color 0.2s ease;
@@ -602,7 +602,7 @@ section.info .info-residents li a:hover
 }
 section.info .info-residents li a > span:last-child
 {
-    font-size: 0.75rem;
+    font-size: 0.75em;
     color: var(--theme-gray-50);
     white-space: nowrap;
 }
@@ -612,23 +612,23 @@ section.info .info-residents li a.info-nature
 }
 section.info .info-image
 {
-    margin: 0 0 1.5rem;
+    margin: 0 0 1.5em;
     text-align: center;
 }
 section.info .info-image img
 {
     display: block;
     max-width: 100%;
-    max-height: 24rem;
-    margin: 0 auto 0.25rem;
-    border-radius: 0.5rem;
-    box-shadow: 0 0.25rem 0.75rem var(--theme-transparent-60);
+    max-height: 24em;
+    margin: 0 auto 0.25em;
+    border-radius: 0.5em;
+    box-shadow: 0 0.25em 0.75em var(--theme-transparent-60);
     object-fit: contain;
 }
 section.info .info-image > span,
 section.info .info-image > a
 {
-    font-size: 0.75rem;
+    font-size: 0.75em;
     color: var(--theme-gray-50);
 }
 section.info .info-image > a
@@ -643,8 +643,8 @@ section.info .info-image > a:hover
 }
 section.info .info-detail
 {
-    margin-bottom: 1.5rem;
-    font-size: 0.9375rem;
+    margin-bottom: 1.5em;
+    font-size: 0.9375em;
     line-height: 1.7;
     color: var(--theme-gray-25);
 }
@@ -661,8 +661,8 @@ section.info .info-relats .sections,
 section.info .info-gallery .sections
 {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(9rem, 9rem));
-    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(9em, 9em));
+    gap: 1em;
     flex: 1;
     min-width: 0;
 }
@@ -671,19 +671,23 @@ div.info-gallery
 {
 	flex-wrap: wrap;
 	align-items: flex-start;
-	gap: 0.5rem;
+	gap: 0.5em;
 	margin-inline: 3rem 1.5rem;
+}
+div.info-relats
+{
+    font-size: 0.5rem !important;
 }
 div.info-relats section.card,
 div.info-gallery section.card
 {
-	height: 9rem;
-	width: 9rem;
+	height: 9em;
+	width: 9em;
 }
 section.info .info-links li
 {
     position: relative;
-    padding-left: 0.75rem;
+    padding-left: 0.75em;
     color: var(--theme-midst);
     cursor: pointer;
     transition: color 0.2s ease;
@@ -705,11 +709,11 @@ section.info .info-links li a
     text-decoration: none;
     color: inherit;
 }
-@media (max-width: 40rem)
+@media (max-width: 40em)
 {
     section.info
     {
-        padding: 1rem 1rem 2rem;
+        padding: 1em 1em 2em;
     }
     section.info .info-alias,
     section.info .info-residents,
@@ -718,7 +722,7 @@ section.info .info-links li a
     section.info .info-links
     {
         flex-direction: column;
-        gap: 0.25rem;
+        gap: 0.25em;
     }
     section.info .info-relats .sections,
     section.info .info-gallery .sections
@@ -737,9 +741,9 @@ div.treeview
 }
 div.treeview section.card
 {
-    height: 9rem;
-    width: 9rem;
-    margin: 1rem;
+    height: 9em;
+    width: 9em;
+    margin: 1.5em;
     grid-column: calc(var(--x) + 1);
     grid-row: calc(var(--y) + 1);
     z-index: 1;

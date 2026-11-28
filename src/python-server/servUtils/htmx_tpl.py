@@ -163,7 +163,7 @@ def fmt_tree(nodes, links, manuls, lang):
     
     paths = []
     for link in links:
-        rr = 0.05
+        rr = 0.075
         x0, y0 = link[0:2]
         x1, y1 = link[2:4]
         yh = max(y0, y1) - 0.5
